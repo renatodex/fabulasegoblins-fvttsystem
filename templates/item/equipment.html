@@ -1,0 +1,114 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{!-- Item Sheet Header --}}
+  <header class="sheet-header">
+    <img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img" />
+
+    <div class="header-details flexrow">
+      <h1>{{item.name}}</h1>
+    </div>
+  </header>
+
+  {{!-- Item Sheet Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item active" data-tab="details">Item info</a>
+  </nav>
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    <div class="tab sheet-page sheet-equipments {{#if data.equipped}}sheet-equipments--equipped{{/if}}" data-group="primary" data-tab="details">
+      <h1 class="sheet-title">{{item_header}}</h1>
+
+      <fieldset class="repeating_equipeditems">
+        <div class="sheet-equipeditem">
+          <div class="sheet-equipeditem-formfield">
+            <span>
+              Tipo de Ataque
+            </span>
+            <select name="data.attack_type" class="itemrange">
+              {{#select data.attack_type}}
+                {{#each attack_types as |temp_attack_type key|}}
+                  <option value="{{temp_attack_type.name}}">{{temp_attack_type.label}}</option>
+                {{/each}}
+              {{/select}}
+            </select>
+
+          </div>
+
+          <div class="sheet-equipeditem-formfield">
+            <span>
+              Fórmula de Dano
+            </span>
+            <input
+              type="text"
+              name="data.damage_formula"
+              value="{{data.damage_formula}}"
+            />
+          </div>
+
+          <div class="sheet-equipeditem-formfield">
+            <input type="hidden" value="0" name="attr_equip_weapon_correspondent_attribute" />
+            <span>
+              Atributo da Arma
+            </span>
+            <select name="data.item_attribute" class="dicetype" data-dtype="String">
+              {{#select data.item_attribute}}
+                {{#each attributes as |temp_attribute key|}}
+                  <option value="{{temp_attribute.name}}">{{temp_attribute.label}}</option>
+                {{/each}}
+              {{/select}}
+            </select>
+          </div>
+
+          <div class="sheet-equipeditem-formfield sheet-equipeditem-formfield--mods">
+            <span>Modificadores (ATK/DEF)</span>
+            <input
+              type="text"
+              data-dtype="Number"
+              name="data.attack_modifier"
+              value="{{data.attack_modifier}}"
+            />
+            <input
+              type="text"
+              data-dtype="Number"
+              name="data.defense_modifier"
+              value="{{data.defense_modifier}}"
+            />
+          </div>
+
+          <div class="sheet-equipeditem-formfield sheet-equipeditem-formfield--description">
+            <span>Descrição</span>
+            <textarea name="data.description" rows="12" cols="160">{{data.description}}</textarea>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    {{#if owned}}
+      <div class="item-actions">
+        <div class="item-actions__header">
+
+        </div>
+
+        <div class="item-actions__actions">
+          <div class="item-actions__action">
+            <button class="item-actions__equip">
+              {{#if data.equipped}}
+                Desequipar
+              {{else}}
+                Equipar
+              {{/if}}
+            </button>
+          </div>
+
+          <div class="item-actions__action">
+            <button class="item-actions__roll-attack">Rolar Ataque</button>
+          </div>
+
+          <div class="item-actions__action">
+            <button class="item-actions__roll-damage">Rolar Dano</button>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  </section>
+</form>

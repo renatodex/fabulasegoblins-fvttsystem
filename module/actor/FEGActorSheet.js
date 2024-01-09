@@ -2,175 +2,116 @@
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
+/* global ActorSheet, mergeObject */
 export class FEGActorSheet extends ActorSheet {
-
   /** @override */
-  static get defaultOptions() {
+  static get defaultOptions () {
     return mergeObject(super.defaultOptions, {
-      classes: ["fegsystem", "sheet", "actor"],
-      template: "systems/fabulasegoblins-fvttsystem/templates/actor/actor-sheet.html",
-      width: 600,
-      height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
-    });
+      classes: ['fegsystem', 'sheet', 'actor'],
+      template: 'systems/fabulasegoblins-fvttsystem/templates/actor/actor-sheet.html',
+      width: 860,
+      height: 700,
+      tabs: [{ navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'character' }]
+    })
   }
-
-  /* -------------------------------------------- */
 
   /** @override */
-  getData() {
-    const data = super.getData();
-    data.dtypes = ["String", "Number", "Boolean"];
-    for (let attr of Object.values(data.data.attributes)) {
-      attr.isCheckbox = attr.dtype === "Boolean";
-    }
+  getData () {
+    const data = super.getData()
+    data.classes = [
+      { label: 'Nenhum' },
+      { label: 'Especial' },
+      { label: 'Aventureiro' },
+      { label: 'Caçador' },
+      { label: 'Arcanista' },
+      { label: 'Sacerdote' },
+      { label: 'Fortuno' }
+    ]
 
-    // Prepare items.
-    if (this.actor.data.type == 'character') {
-      this._prepareCharacterItems(data);
-    }
-
-    return data;
+    data.species = [
+      { label: 'Nenhum' },
+      { label: 'Goblin' },
+      { label: 'Metalóide' },
+      { label: 'Armadon' },
+      { label: 'Razalan' },
+      { label: 'Snalgon' }
+    ]
+    return data
   }
 
-  /**
-   * Organize and classify Items for Character sheets.
-   *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareCharacterItems(sheetData) {
-    const actorData = sheetData.actor;
+  activateListeners (html) {
+    super.activateListeners(html)
 
-    // Initialize containers.
-    const gear = [];
-    const features = [];
-    const spells = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: []
-    };
+    html.find('.roll-attribute-check').click(event => {
+      const template = 'systems/fabulasegoblins-fvttsystem/templates/chat/attribute_roll.html'
 
-    // Iterate through items, allocating to containers
-    // let totalWeight = 0;
-    for (let i of sheetData.items) {
-      let item = i.data;
-      i.img = i.img || DEFAULT_TOKEN;
-      // Append to gear.
-      if (i.type === 'item') {
-        gear.push(i);
+      const templateData = {
+        attribute_name: 'Força'
       }
-      // Append to features.
-      else if (i.type === 'feature') {
-        features.push(i);
+
+      const chatData = {
+        user: game.user._id,
+        speaker: {
+          actor: this.actor._id,
+          token: this.actor.token,
+          alias: this.actor.name
+        },
+        type: CONST.CHAT_MESSAGE_TYPES.OTHER
       }
-      // Append to spells.
-      else if (i.type === 'spell') {
-        if (i.data.spellLevel != undefined) {
-          spells[i.data.spellLevel].push(i);
-        }
-      }
-    }
 
-    // Assign and return
-    actorData.gear = gear;
-    actorData.features = features;
-    actorData.spells = spells;
+      renderTemplate(template, templateData).then((content) => {
+        chatData.content = content
+
+        ChatMessage.create(chatData, { displaySheet: false }).then(msg => {
+          msg.setFlag('fabulasegoblins-fvttsystem', 'actorData', this.data)
+        })
+      })
+    })
+
+    html.find('.sheet-equipment__name').click((event) => {
+      const itemId = $(event.target).data('id')
+      console.log(this.actor.items)
+      const actorItem = this.actor.items.get(itemId)
+      actorItem.sheet.render(true)
+      // temp1.get('Nxr3lQXEiIzegoWE').sheet.render(true)
+      // console.log(item)
+      // item.render(true)
+    })
+
+    html.find('.add-item').click(event => {
+      // console.log('Actor', this.actor)
+      event.preventDefault()
+      // const header = event.currentTarget;
+      // const data = duplicate(header.dataset);
+      // console.log('Header', header)
+      // console.log('Data', data);
+      // mergeObject(data, {'type': 'item'});
+      // console.log('Data after Merge', data);
+      // data.name = `New Item`;
+
+      // Aqui voce cria um item "global"
+      // Item.create({name: "Test Weapon", type: "base"}).then(item => {
+      //   console.log(item.data);
+      // })
+
+      // Aqui voce só cria um item para o personagem
+      // this.actor.createOwnedItem({
+      //   type: 'base',
+      //   name: 'New Item'
+      // }, {
+      //   renderSheet: true
+      // });
+    })
   }
 
-  /* -------------------------------------------- */
-
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    // Everything below here is only needed if the sheet is editable
-    if (!this.options.editable) return;
-
-    // Add Inventory Item
-    html.find('.item-create').click(this._onItemCreate.bind(this));
-
-    // Update Inventory Item
-    html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.data("itemId"));
-      item.sheet.render(true);
-    });
-
-    // Delete Inventory Item
-    html.find('.item-delete').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.data("itemId"));
-      li.slideUp(200, () => this.render(false));
-    });
-
-    // Rollable abilities.
-    html.find('.rollable').click(this._onRoll.bind(this));
-
-    // Drag events for macros.
-    if (this.actor.owner) {
-      let handler = ev => this._onDragStart(ev);
-      html.find('li.item').each((i, li) => {
-        if (li.classList.contains("inventory-header")) return;
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
-      });
-    }
-  }
-
-  /**
-   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onItemCreate(event) {
-    event.preventDefault();
-    const header = event.currentTarget;
-    // Get the type of item to create.
-    const type = header.dataset.type;
-    // Grab any data associated with this control.
-    const data = duplicate(header.dataset);
-    // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
-    // Prepare the item object.
-    const itemData = {
-      name: name,
-      type: type,
-      data: data
-    };
-    // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
-
-    // Finally, create the item!
-    return this.actor.createOwnedItem(itemData);
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-
-    if (dataset.roll) {
-      let roll = new Roll(dataset.roll, this.actor.data.data);
-      let label = dataset.label ? `Rolling ${dataset.label}` : '';
-      roll.roll().toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label
-      });
+  _onDrop (event) {
+    const dropData = JSON.parse(event.dataTransfer.getData('text/plain'));
+    if (dropData.type === 'Item') {
+      console.log('Find Item')
+      let item = game.items.get(dropData.id)
+      this.actor.createOwnedItem(item.data, {
+        renderSheet: false
+      })
     }
   }
-
 }

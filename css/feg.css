@@ -1,248 +1,613 @@
-@import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
-/* Global styles */
-.window-app {
-  font-family: "Roboto", sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.item.active {
+  display: none;
 }
 
-.rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
+.item-actions {
+  margin-top: 20px;
+  border: 4px solid #000;
+  border-radius: 12px;
+  padding: 14px;
+  background-color: #fff;
 }
 
-.grid,
-.grid-2col {
+.item-actions__actions {
   display: grid;
-  grid-column: span 2 / span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
-  padding: 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
 }
 
-.grid-3col {
-  grid-column: span 3 / span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.item-actions__header {
+
 }
 
-.grid-4col {
-  grid-column: span 4 / span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.sheet-tablabel.active {
+    background-color: #8f32a7;
 }
 
-.grid-5col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.charsheet {
+  background-color: #fff;
 }
 
-.grid-6col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+input, select {
+  background: transparent !important;
 }
 
-.grid-7col {
-  grid-column: span 7 / span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+.roll-button {
+  padding: 0px 3px;
+  font-size: 1.3em;
+  margin: 0px;
+  width: 16px;
+  height: 16px;
 }
 
-.grid-8col {
-  grid-column: span 8 / span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+/* This class had to be overrided with !important,
+ because I don't have access to it.
+  Perhaps I could use CSS priority to handle this, but that's not the priority now.
+*/
+
+.sheet-tabs {
+  height: auto !important;
+  margin-bottom: 20px !important;
+  border: 0px !important;
 }
 
-.grid-9col {
-  grid-column: span 9 / span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+.sheet-charinfo-exp-subgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 9px;
 }
 
-.grid-10col {
-  grid-column: span 10 / span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-
-.grid-11col {
-  grid-column: span 11 / span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-
-.grid-12col {
-  grid-column: span 12 / span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.flex-group-center,
-.flex-group-left,
-.flex-group-right {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.sheet-levelblock {
   text-align: center;
-  padding: 5px;
-  border: 1px solid #999;
+  padding: 3px;
+  border: 1px solid #c3c3c3;
+  border-radius: 8px;
 }
 
-.flex-group-left {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+.sheet-charinfo-exp {
+  grid-column: 3/6;
+}
+
+button[type=roll].sheet-blank-roll-button::before { content: ''; }
+
+fieldset {
+  border: 0;
+}
+
+.sheet-title {
+  font-size: 28px;
+  font-family: Lato, Helvetica, Arial;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+div.sheet-header {
+  padding-top: 10px;
+  margin-bottom: 20px;
+}
+
+div.sheet-logo {
+  font-family: Arial;
+  font-size: 30px;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  height: 60px;
+  width: 300px;
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/logo.jpg');
+  background-size: 300px;
+  background-repeat: no-repeat;
+}
+
+div.sheet-field {
+  font-family: Arial;
+  font-weight: bold;
+}
+
+.sheet-field input[type=text] {
+  font-family: Arial;
+  font-size: 16px;
+  border: 2px solid #000;
+  margin-top: 4px;
+  padding: 7px;
+}
+
+.sheet-attributes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 800px;
+}
+
+.sheet-attribute {
+  height: 100px;
+  width: 150px;
+  background-size: 150px;
+  background-repeat: no-repeat;
+  margin-top: -21px;
+}
+
+.sheet-attribute .sheet-attr-value {
+  font-size: 30px;
+  width: 48px !important;
+  background-color: transparent;
+  border: 0;
+  position: relative;
+  left: 86px;
+  top: 13px;
+  text-align: center;
+  border: 1px solid #000;
+  font-size: 18px;
+}
+
+.sheet-attribute .sheet-attr-value-mod {
+  font-size: 14px;
+  width: 38px !important;
+  background-color: transparent;
+  border: 0;
+  position: relative;
+  left: 56px;
+  top: 47px;
+  -webkit-appearance: none;
+  margin: 0px;
+  text-align: center;
+}
+
+.sheet-attribute-des {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/attr-destino.jpg');
+}
+
+.sheet-attribute-agi {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/attr-agilidade.jpg');
+}
+
+.sheet-attribute-str {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/attr-forca.jpg');
+}
+
+.sheet-attribute-int {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/attr-inteligencia.jpg');
+}
+
+.sheet-attribute-cha {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/attr-carisma.jpg');
+}
+
+.sheet-charinfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  width: 796px;
+}
+
+.sheet-charinfo-race {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/player-race.png');
+  background-size: 220px;
+  background-repeat: no-repeat;
+  width: 220px;
+  height: 100px;
+}
+.sheet-charinfo-race select {
+  font-size: 18px;
+  width: 180px;
+  border: 0;
+  position: relative;
+  top: 45px;
+  left: 20px;
+  background: transparent;
+}
+
+.sheet-charinfo-movement {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/movement2.jpg');
+  background-size: 200px;
+  background-repeat: no-repeat;
+  width: 250px;
+  height: 130px;
+}
+.sheet-charinfo-movement input {
+  font-size: 30px;
+  width: 100px;
+  border: 0;
+  position: relative;
+  top: 55px;
+  left: 70px;
   text-align: left;
 }
 
-.flex-group-right {
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.flex-center {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.flex-between {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-/* Styles limited to fegsystem sheets */
-.fegsystem .item-form {
-  font-family: "Roboto", sans-serif;
-}
-
-.fegsystem .sheet-header {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 210px;
-  flex: 0 0 210px;
-  overflow: hidden;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-
-.fegsystem .sheet-header .profile-img {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 100px;
-  flex: 0 0 100px;
+.sheet-charinfo-class {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/player-class.jpg');
+  background-size: 220px;
+  background-repeat: no-repeat;
+  width: 220px;
   height: 100px;
-  margin-right: 10px;
+}
+.sheet-charinfo-class select {
+  font-size: 18px;
+  width: 180px;
+  border: 0;
+  position: relative;
+  top: 45px;
+  left: 20px;
 }
 
-.fegsystem .sheet-header .header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+.sheet-charinfo-coins {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/player-coins.jpg');
+  background-size: 220px;
+  background-repeat: no-repeat;
+  width: 220px;
+  height: 100px;
+}
+.sheet-charinfo-coins input {
+  font-size: 18px;
+  width: 130px;
+  border: 0;
+  position: relative;
+  top: 45px;
+  left: 65px;
 }
 
-.fegsystem .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
+.sheet-charinfo-level {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/player-level.jpg');
+  background-size: 93px;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+}
+.sheet-charinfo-level input {
+  font-size: 18px;
+  width: 50px;
+  border: 0;
+  position: relative;
+  top: 45px;
+  left: 20px;
 }
 
-.fegsystem .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+.sheet-main-grid {
+  display: grid;
+  grid-template-columns: 2.7fr 1fr;
 }
 
-.fegsystem .sheet-tabs {
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
+.sheet-flaws {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  padding: 60px 25px 25px 25px;
+  box-sizing: border-box;
+}
+.sheet-flaws textarea {
+  width: 98%;
+  height: 395px;
+  background-color: transparent;
 }
 
-.fegsystem .sheet-body,
-.fegsystem .sheet-body .tab,
-.fegsystem .sheet-body .tab .editor {
-  height: 100%;
+.sheet-pools {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
-.fegsystem .tox .tox-editor-container {
-  background: #fff;
+.sheet-pool-hp {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/pool-life.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 180px;
+  border: 1px solid #fff;
+  padding-left: 20px;
+}
+.sheet-pool-hp input {
+  font-size: 26px;
+  width: 60px;
+  display: block;
+  margin: 0 auto;
+  border: 0;
+  background-color: transparent;
+  text-align:center;
+}
+.sheet-pool-hp .sheet-pool-hp-current {
+  margin-top: 34%;
+}
+.sheet-pool-hp .sheet-pool-hp-max {
+  margin-top: 32px;
 }
 
-.fegsystem .tox .tox-edit-area {
-  padding: 0 8px;
+
+.sheet-pool-mp {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/pool-magic.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 180px;
+  border: 1px solid #fff;
+  padding-left: 20px;
+}
+.sheet-pool-mp input {
+  font-size: 26px;
+  width: 60px;
+  display: block;
+  margin: 0 auto;
+  border: 0;
+  background-color: transparent;
+  text-align:center;
+}
+.sheet-pool-mp .sheet-pool-mp-current {
+  margin-top: 34%;
+}
+.sheet-pool-mp .sheet-pool-mp-max {
+  margin-top: 32px;
 }
 
-.fegsystem .resource-label {
-  font-weight: bold;
-  text-transform: uppercase;
+.sheet-pool-atk {
+  background-image: url('https://fabula-de-goblins.s3-us-west-2.amazonaws.com/pool-attack.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 180px;
+  border: 1px solid #fff;
+  padding-left: 20px;
+}
+.sheet-pool-atk input {
+  font-size: 26px;
+  width: 48px;
+  display: block;
+  margin: 0 auto;
+  border: 0;
+  background-color: transparent;
+  text-align:center;
+}
+.sheet-pool-atk .sheet-pool-atk-block {
+  margin-top: 34%;
+}
+.sheet-pool-atk .sheet-pool-atk-hit {
+  margin-top: 26px;
+  margin-left: 46px;
 }
 
-.fegsystem .tabs {
-  height: 40px;
-  border-top: 1px solid #AAA;
-  border-bottom: 1px solid #AAA;
+.sheet-attr-roll::before {
+  font-size: 13px !important;
+}
+.sheet-attr-roll {
+  padding: 0px 3px !important;
+  font-size: 1.3em !important;
+  margin: 0px !important;
+  position: relative;
+  top: 76px;
+  left: 121px;
+  width: 16px;
+  height: 16px;
 }
 
-.fegsystem .tabs .item {
-  line-height: 40px;
-  font-weight: bold;
+.sheet-separator {
+  width: 780px;
+  height: 3px;
+  margin: 15px;
+  border: 0;
+  background-color: #000;
 }
 
-.fegsystem .tabs .item.active {
-  text-decoration: underline;
-  text-shadow: none;
+.sheet-magics {
+  padding: 15px 25px;
 }
 
-.fegsystem .items-list {
-  list-style: none;
-  margin: 7px 0;
-  padding: 0;
-  overflow-y: auto;
+.sheet-magics-h1 {
+  font-size: 28px;
+  font-family: Lato, Helvetica, Arial;
+  margin-bottom: 14px;
 }
 
-.fegsystem .items-list .item-header {
-  font-weight: bold;
+.sheet-magics-table {
+  border-collapse: collapse;
+  border: 2px solid #000;
 }
 
-.fegsystem .items-list .item {
-  height: 30px;
-  line-height: 24px;
-  padding: 3px 0;
-  border-bottom: 1px solid #BBB;
+.sheet-magics-table td {
+  padding: 8px !important;
+  border-bottom: 1px solid #e9e9e9;
 }
 
-.fegsystem .items-list .item .item-image {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 24px;
-  flex: 0 0 24px;
-  margin-right: 5px;
+.sheet-magics-table td img {
+  width: 40px;
 }
 
-.fegsystem .items-list .item img {
+.sheet-magics-table th {
+  padding: 8px;
+  border-bottom: 2px solid #000;
+}
+
+.sheet-magics-table td input {
+  padding: 4px;
+  font-size: 20px;
+  width: 60px !important;
+}
+
+.sheet-magics-table td, .sheet-magics-table th {
+  font-family: Lato, Helvetica, Arial;
+  border-right: 2px solid #000;
+}
+
+.sheet-navigation {
+  margin-bottom: 20px;
+  width: 800px;
+}
+
+.sheet-tablabel {
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #000;
+  border: 0;
+  color: #fff;
+  padding: 7px 8px;
+  font-family: Lato, Helvetica, Arial;
+  font-weight:bold;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: all .2s ease-in-out;
+  display: inline-block;
+  text-align: center;
+  align-self: flex-end;
+}
+
+.sheet-tablabel-character {
+}
+
+.sheet-tablabel-magics {
+  font-size: 12px;
+}
+
+.sheet-tablabel-equipments {
+}
+
+.sheet-tablabel-inventory {
+}
+
+.sheet-tablabel-flaws {
+}
+
+.sheet-tablabel-habilities {
+}
+
+.sheet-tablabel:hover {
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+}
+
+/* show the selected tab */
+.sheet-tabinput-character:checked ~ div.sheet-character,
+.sheet-tabinput-magics:checked ~ div.sheet-magics,
+.sheet-tabinput-equipments:checked ~ div.sheet-equipments,
+.sheet-tabinput-inventory:checked ~ div.sheet-inventory,
+.sheet-tabinput-flaws:checked ~ div.sheet-flaws,
+.sheet-tabinput-habilities:checked ~ div.sheet-habilities {
   display: block;
 }
 
-.fegsystem .items-list .item-name {
-  margin: 0;
+.sheet-tabinput-character:checked ~ .sheet-tablabel-character,
+.sheet-tabinput-magics:checked ~ .sheet-tablabel-magics,
+.sheet-tabinput-equipments:checked ~ .sheet-tablabel-equipments,
+.sheet-tabinput-inventory:checked ~ .sheet-tablabel-inventory,
+.sheet-tabinput-flaws:checked ~ .sheet-tablabel-flaws,
+.sheet-tabinput-habilities:checked ~ .sheet-tablabel-habilities {
+  background-color: #fff !important;
+  border: 1px solid #000 !important;
+  color: #000 !important;
 }
 
-.fegsystem .items-list .item-controls {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 86px;
-  flex: 0 0 86px;
-  text-align: right;
+.sheet-end-of-navigation {
+  color: #fff;
+  border: 0;
+  height: 4px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.sheet-page {
+  border: 4px solid #000;
+  border-radius: 15px;
+}
+
+.sheet-character {
+  padding: 25px 20px;
+}
+
+.sheet-magics {
+  padding: 5px 25px;
+}
+
+.sheet-equipments {
+  padding: 5px 21px;
+  background-color: #fff;
+}
+
+.sheet-inventory {
+  padding: 5px 21px;
+}
+
+.sheet-flaws {
+  padding: 5px 21px;
+}
+
+.sheet-habilities {
+  padding: 5px 21px;
+}
+
+.sheet-equipped-item label {
+  /* font-family: Lato, Helvetica, Arial;
+  display:block; */
+}
+
+.sheet-equipeditem {
+  border: 3px solid #000;
+  padding: 5px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 14px;
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+}
+
+.tab.sheet-page.sheet-equipments.sheet-equipments--equipped.active {
+    background-color: #f5e9ff;
+}
+
+.sheet-equipeditem--hability {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.sheet-equipeditem-formfield--description {
+  grid-column: 2/4;
+}
+
+.sheet-equipeditem-formfield--description textarea {
+  width: 450px !important;
+  height: 190px !important;
+}
+
+.sheet-equipeditem-formfield {
+  font-size: 14px;
+  font-family: Lato, Helvetica, Arial;
+  font-weight: bold;
+  display: block;
+  margin: 7px;
+}
+
+.sheet-equipeditem-formfield--mods {
+  font-size: 0px;
+}
+
+.sheet-equipeditem-formfield--mods span {
+  font-size: 14px;
+}
+
+.sheet-equipeditem-formfield--mods input {
+  font-size: 14px;
+  font-family: Lato, Helvetica, Arial;
+  font-weight: bold;
+  display: inline-block;
+  margin: 7px;
+  width: 50px;
+}
+
+.sheet-equipeditem-formfield span {
+  display: block;
+  margin-bottom: 7px;
+}
+
+.sheet-equipeditem-formfield select {
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 14px;
+  font-family: Lato, Helvetica, Arial;
+  height: 40px;
+}
+
+.sheet-equipeditem-formfield input {
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 14px;
+  font-family: Lato, Helvetica, Arial;
+}
+
+.sheet-equipeditem-formfield textarea {
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 14px;
+  font-family: Lato, Helvetica, Arial;
+  width: 200px;
+  height: 40px;
 }

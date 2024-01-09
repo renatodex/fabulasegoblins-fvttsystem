@@ -7,9 +7,10 @@
   "compatibleCoreVersion": "0.7.9",
   "templateVersion": 2,
   "author": "Renato Alves",
-  "esmodules": ["module/feg.js"],
+  "esmodules": [
+    "module/feg.js"
+  ],
   "styles": ["css/feg.css"],
-  "scripts": [],
   "packs": [],
   "languages": [
     {
@@ -20,8 +21,8 @@
   ],
   "gridDistance": 5,
   "gridUnits": "ft",
-  "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "power",
+  "primaryTokenAttribute": "hit_points",
+  "secondaryTokenAttribute": "magic_points",
   "url": "",
   "manifest": "",
   "download": "",
